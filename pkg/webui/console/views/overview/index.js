@@ -12,10 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React, { useMemo, useCallback, useRef } from 'react'
+import React, { useMemo, useCallback, useRef, useState } from 'react'
 import { Container, Col, Row } from 'react-grid-system'
 import { defineMessages } from 'react-intl'
 import { useSelector } from 'react-redux'
+
+import {
+Dialog, DialogContent, DialogTitle, IconButton, Box,
+Button
+} from '@mui/material'
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+
+import videoFile from '@assets/videos/HomePage.mp4'
 
 import AppAnimation from '@assets/animations/illustrations/app.json'
 import GatewayAnimation from '@assets/animations/illustrations/gateway.json'
@@ -54,9 +62,9 @@ import HelpLink from './help-link'
 import style from './overview.styl'
 
 const m = defineMessages({
-  createApplication: 'Create an application',
+  createApplication: 'Create a project',
   createGateway: 'Register a gateway',
-  gotoApplications: 'Go to applications',
+  gotoApplications: 'Go to projects',
   gotoGateways: 'Go to gateways',
   welcome: 'Welcome to the Console!',
   welcomeBack: 'Welcome back, {userName}! 👋',
@@ -78,6 +86,8 @@ const Overview = () => {
   const documentationBaseUrl = selectDocumentationUrlConfig()
   const appAnimationRef = useRef(null)
   const gatewayAnimationRef = useRef(null)
+
+  const [openVideo, setOpenVideo] = useState(false);
 
   useBreadcrumbs('overview', <Breadcrumb path="/" content={sharedMessages.overview} />)
 
@@ -159,6 +169,43 @@ const Overview = () => {
 
   return (
     <RequireRequest requestAction={[getApplicationsList(), getGatewaysList()]}>
+      <div
+        style={{
+          display: 'flex',
+          position: 'absolute',
+          right: '1px',
+          margin: '4px 4px',
+          zIndex: 1000,
+        }}
+      >
+        <Button
+          variant="contained"
+          onClick={() => setOpenVideo(true)}
+          startIcon={<HelpOutlineIcon />}
+          style={{ maxHeight: '36px' }}
+        >
+          <p>Help Video</p>
+        </Button>
+      </div>
+      <Dialog
+        open={openVideo}
+        onClose={() => setOpenVideo(false)}
+        maxWidth="md"
+        style={{ zIndex: '2001' }}
+        PaperProps={{
+          style: {
+            borderRadius: '6px',
+          },
+        }}
+      >
+        <DialogTitle style={{ alignSelf: 'center' }}>Home Video Guide</DialogTitle>
+        <DialogContent>
+          <video controls style={{ width: '100%' }}>
+            <source src={videoFile} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </DialogContent>
+      </Dialog>
       <Container>
         <div className={style.welcomeSection}>
           <Row>

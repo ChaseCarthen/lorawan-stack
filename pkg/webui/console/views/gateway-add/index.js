@@ -12,13 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Container, Col, Row } from 'react-grid-system'
 import { defineMessages } from 'react-intl'
 import { useNavigate } from 'react-router-dom'
+import { Dialog, DialogContent, DialogTitle, IconButton, Box, Button } from '@mui/material'
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
 
-import PageTitle from '@ttn-lw/components/page-title'
+import videoFile from '@assets/videos/AddGateway.mp4'
+
 import Link from '@ttn-lw/components/link'
+import PageTitle from '@ttn-lw/components/page-title'
 
 import Message from '@ttn-lw/lib/components/message'
 import RequireRequest from '@ttn-lw/lib/components/require-request'
@@ -46,6 +50,7 @@ const GatewayGuideLink = content => (
 
 const GatewayAdd = () => {
   const navigate = useNavigate()
+  const [openVideo, setOpenVideo] = useState(false)
   const handleSuccess = useCallback(
     (gtwId, isManaged = false) => {
       if (isManaged) {
@@ -61,6 +66,24 @@ const GatewayAdd = () => {
     <Require featureCheck={mayCreateGateways} otherwise={{ redirect: '/gateways' }}>
       <RequireRequest requestAction={getOrganizationsList()}>
         <Container>
+          <div
+            style={{
+              display: 'flex',
+              position: 'absolute',
+              right: '1px',
+              margin: '4px 4px',
+              zIndex: 1000,
+            }}
+          >
+            <Button
+              variant="contained"
+              onClick={() => setOpenVideo(true)}
+              startIcon={<HelpOutlineIcon />}
+              style={{ maxHeight: '36px' }}
+            >
+              <p>Help Video</p>
+            </Button>
+          </div>
           <PageTitle
             colProps={{ md: 10, lg: 9 }}
             className="mb-cs-s"
@@ -78,6 +101,25 @@ const GatewayAdd = () => {
               <GatewayOnboardingForm onSuccess={handleSuccess} />
             </Col>
           </Row>
+          <Dialog
+            open={openVideo}
+            onClose={() => setOpenVideo(false)}
+            maxWidth="md"
+            style={{ zIndex: '2001' }}
+            PaperProps={{
+              style: {
+                borderRadius: '6px',
+              },
+            }}
+          >
+            <DialogTitle style={{ alignSelf: 'center' }}>Adding Gateway Video Guide</DialogTitle>
+            <DialogContent>
+              <video controls style={{ width: '100%' }}>
+                <source src={videoFile} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </DialogContent>
+          </Dialog>
         </Container>
       </RequireRequest>
     </Require>

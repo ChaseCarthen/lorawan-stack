@@ -31,6 +31,7 @@ import nib from 'nib'
 
 import pjson from '../package.json'
 
+const Dotenv = require('dotenv-webpack');
 const { version } = pjson
 const revision =
   child_process.execSync('git rev-parse --short HEAD').toString().trim() || 'unknown revision'
@@ -258,6 +259,17 @@ export default {
         },
       },
       {
+        test: /\.(mp4)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: 'static/media/[name].[hash:8].[ext]',
+            },
+          },
+        ],
+      },
+      {
         test: /\.(woff|woff2|ttf|eot|jpg|jpeg|png|svg)$/i,
         type: 'asset/resource',
         generator: {
@@ -282,6 +294,12 @@ export default {
   },
   plugins: env({
     all: [
+      ,
+      new Dotenv({
+        path: './.env.extra', // Path to .env file (this is the default)
+        safe: true, // load .env.example (defaults to "false" which does not use dotenv-safe)
+        systemvars: true,
+      }),
       new webpack.EnvironmentPlugin({
         NODE_ENV,
         VERSION: version,

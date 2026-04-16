@@ -106,15 +106,28 @@ func generateConsoleCSPString(config *Config, nonce string, others ...webui.Cont
 		ConnectionSource: append([]string{
 			"'self'",
 			config.UI.SentryDSN,
+			config.UI.StatusPage,
 			"gravatar.com",
 			"www.gravatar.com",
+			"localhost:5001",
+			"cssi.unr.dev",
+			"ncar-da-15.rc.unr.edu",
+			"ncar-da-15.rc.unr.edu:30127",
+			"ncar-da-15.rc.unr.edu:30128",
+			"ncar-da-15.rc.unr.edu:30129",
+			"www.google-analytics.com",
 		}, baseURLs...),
-		StyleSource: []string{
+		StyleSource: append([]string{
+			"'self'",
+			"gstatic.com",
+			"www.gstatic.com",
+			"'unsafe-inline'",
+		}, []string{
 			"'self'",
 			config.UI.AssetsBaseURL,
 			config.UI.BrandingBaseURL,
 			"'unsafe-inline'",
-		},
+		}...),
 		ScriptSource: []string{
 			"'self'",
 			config.UI.AssetsBaseURL,

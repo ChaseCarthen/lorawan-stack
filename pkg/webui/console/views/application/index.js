@@ -29,11 +29,14 @@ import GenericNotFound from '@ttn-lw/lib/components/full-view-error/not-found'
 
 import Require from '@console/lib/components/require'
 
+import videoFile from '@assets/videos/ProjectsOverview.mp4'
+
 import ApplicationOverview from '@console/views/application-overview'
 import ApplicationGeneralSettings from '@console/views/application-general-settings'
 import ApplicationApiKeys from '@console/views/application-api-keys'
 import ApplicationCollaborators from '@console/views/application-collaborators'
 import ApplicationData from '@console/views/application-data'
+import ApplicationDataVisualization from '@console/views/application-datavis'
 import ApplicationPayloadFormatters from '@console/views/application-payload-formatters'
 import ApplicationIntegrationsWebhooks from '@console/views/application-integrations-webhooks'
 import ApplicationIntegrationsPubsubs from '@console/views/application-integrations-pubsubs'
@@ -73,6 +76,9 @@ import {
   selectMqttProviderDisabled,
   selectNatsProviderDisabled,
 } from '@console/store/selectors/application-server'
+
+import ApplicationDataExport from '../application-expdata'
+import ApplicationMap from '../application-map'
 
 const Application = () => {
   const { appId } = useParams()
@@ -123,6 +129,9 @@ const ApplicationInner = () => {
           iconAlt: sharedMessages.application,
           title: name,
           to: '',
+          videoFile: videoFile,
+          videoTitle: 'Projects Video Guide',
+          videoEnabled: true
         }}
       >
         {mayViewApplicationInfo.check(rights) && (
@@ -133,6 +142,15 @@ const ApplicationInner = () => {
         )}
         {mayViewApplicationEvents.check(rights) && (
           <SideNavigation.Item title={sharedMessages.liveData} path="data" icon="data" />
+        )}
+        {mayViewApplicationEvents.check(rights) && (
+          <SideNavigation.Item title={sharedMessages.expData} path="expdata" icon="expdata" />
+        )}
+        {mayViewApplicationEvents.check(rights) && (
+          <SideNavigation.Item title={sharedMessages.dataVis} path="datavis" icon="datavis" />
+        )}
+        {mayViewApplicationEvents.check(rights) && (
+          <SideNavigation.Item title={sharedMessages.map} path="map" icon="map" />
         )}
         {maySetApplicationPayloadFormatters.check(rights) && (
           <SideNavigation.Item title={sharedMessages.payloadFormatters} icon="code">
@@ -201,6 +219,9 @@ const ApplicationInner = () => {
         <Route path="devices/*" Component={Devices} />
         <Route path="collaborators/*" Component={ApplicationCollaborators} />
         <Route path="data" Component={ApplicationData} />
+        <Route path="datavis" Component={ApplicationDataVisualization} />
+        <Route path="expdata" Component={ApplicationDataExport} />
+        <Route path="map" Component={ApplicationMap} />
         <Route path="payload-formatters/*" Component={ApplicationPayloadFormatters} />
         <Route path="integrations/mqtt" Component={ApplicationIntegrationsMqtt} />
         <Route path="integrations/webhooks/*" Component={ApplicationIntegrationsWebhooks} />

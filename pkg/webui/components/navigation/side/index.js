@@ -16,6 +16,8 @@ import ReactDom from 'react-dom'
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import classnames from 'classnames'
 import { defineMessages, useIntl } from 'react-intl'
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
+import { Button as MUIButton, Dialog, DialogTitle, DialogContent } from '@mui/material'
 
 import LAYOUT from '@ttn-lw/constants/layout'
 
@@ -52,6 +54,7 @@ const SideNavigation = ({
   const [preferMinimized, setPreferMinimized] = useState(false)
   const node = useRef()
   const intl = useIntl()
+  const [openVideo, setOpenVideo] = useState(false)
 
   const updateAppContainerClasses = useCallback(
     (initial = false) => {
@@ -173,6 +176,16 @@ const SideNavigation = ({
                 <Message className={style.message} content={header.title} />
               </div>
             </Link>
+            {header.videoEnabled && (
+              <MUIButton
+                variant="text"
+                onClick={() => setOpenVideo(true)}
+                startIcon={<HelpOutlineIcon />}
+                style={{ margin: '0px 8px', maxHeight: '36px' }}
+              >
+                <p>Help Video</p>
+              </MUIButton>
+            )}
             <SideNavigationContext.Provider value={{ isMinimized, onLeafItemClick }}>
               <SideNavigationList
                 onListClick={onDrawerExpandClick}
@@ -193,6 +206,25 @@ const SideNavigation = ({
         onClick={onToggle}
         data-hook="side-nav-hide-button"
       />
+      <Dialog
+        open={openVideo}
+        onClose={() => setOpenVideo(false)}
+        maxWidth="md"
+        style={{ zIndex: '2001' }}
+        PaperProps={{
+          style: {
+            borderRadius: '6px',
+          },
+        }}
+      >
+        <DialogTitle style={{ alignSelf: 'center' }}>{header.videoTitle}</DialogTitle>
+        <DialogContent>
+          <video controls style={{ width: '100%' }}>
+            <source src={header.videoFile} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </DialogContent>
+      </Dialog>
     </>
   )
 }
@@ -207,6 +239,9 @@ SideNavigation.propTypes = {
     icon: PropTypes.string.isRequired,
     iconAlt: PropTypes.message.isRequired,
     to: PropTypes.string.isRequired,
+    videoFile: PropTypes.object.isRequired, // Proptype of the video file
+    videoTitle: PropTypes.string.isRequired, // Proptype of video title
+    videoEnabled: PropTypes.bool.isRequired, // Proptype of enabling video
   }).isRequired,
   modifyAppContainerClasses: PropTypes.bool,
 }

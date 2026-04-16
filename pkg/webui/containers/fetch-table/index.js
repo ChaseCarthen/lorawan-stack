@@ -17,6 +17,8 @@ import { defineMessages } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import classnames from 'classnames'
 import { orderBy as lodashOrderBy } from 'lodash'
+import { Dialog, DialogContent, DialogTitle, Button as MUIButton } from '@mui/material'
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
 
 import PAGE_SIZES from '@ttn-lw/constants/page-sizes'
 
@@ -80,6 +82,9 @@ const FetchTable = props => {
     getItemsAction,
     baseDataSelector,
     filtersClassName,
+    videoEnabled, // New prop
+    videoTitle, // New prop for dynamic title
+    videoFile, // New prop for dynamic video
   } = props
 
   const isMounted = useRef(true)
@@ -120,6 +125,9 @@ const FetchTable = props => {
   if (!handleSorting) {
     filters.order = order
   }
+
+  // State for the video popup
+  const [openVideo, setOpenVideo] = useState(false)
 
   useEffect(
     () => () => {
@@ -260,6 +268,25 @@ const FetchTable = props => {
           )}
         </div>
         <div className={style.filtersRight}>
+          {videoEnabled && (
+            <div
+              style={{
+                display: 'flex',
+                margin: '4px 4px',
+                zIndex: 1000,
+              }}
+            >
+              <MUIButton
+                size="small"
+                variant="contained"
+                onClick={() => setOpenVideo(true)}
+                style={{ maxHeight: '36px' }}
+                startIcon={<HelpOutlineIcon />}
+              >
+                <p>Help Video</p>
+              </MUIButton>
+            </div>
+          )}
           {searchable && (
             <Input
               data-test-id="search-input"
@@ -317,6 +344,27 @@ const FetchTable = props => {
           disableSorting={disableSorting}
         />
       </Overlay>
+
+      {/* Video Dialog */}
+      <Dialog
+        open={openVideo}
+        onClose={() => setOpenVideo(false)}
+        maxWidth="md"
+        style={{ zIndex: '2001' }}
+        PaperProps={{
+          style: {
+            borderRadius: '6px',
+          },
+        }}
+      >
+        <DialogTitle style={{ alignSelf: 'center' }}>{videoTitle}</DialogTitle>
+        <DialogContent>
+          <video controls style={{ width: '100%' }}>
+            <source src={videoFile} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
@@ -361,6 +409,9 @@ FetchTable.propTypes = {
       disabled: PropTypes.bool,
     }),
   ),
+  videoEnabled: PropTypes.bool, // New prop for dynamic title
+  videoFile: PropTypes.object, // New prop
+  videoTitle: PropTypes.string, // New prop for dynamic video
 }
 
 FetchTable.defaultProps = {
@@ -383,6 +434,9 @@ FetchTable.defaultProps = {
   clickable: true,
   defaultOrder: undefined,
   filtersClassName: undefined,
+  videoEnabled: false, // Default value
+  videoTitle: 'Video Guide', // Default title
+  videoFile: null, // Default Video
 }
 
 export default FetchTable
