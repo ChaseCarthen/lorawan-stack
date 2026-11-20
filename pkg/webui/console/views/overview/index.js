@@ -61,6 +61,8 @@ import HelpLink from './help-link'
 
 import style from './overview.styl'
 
+
+
 const m = defineMessages({
   createApplication: 'Create a project',
   createGateway: 'Register a gateway',
@@ -69,10 +71,18 @@ const m = defineMessages({
   welcome: 'Welcome to the Console!',
   welcomeBack: 'Welcome back, {userName}! 👋',
   getStarted: 'Get started right away by creating an application or registering a gateway.',
+  nsfFundingMessage: 'This portal has been created as part of the work done in the NSF award {link}',
+  nsfAwardTitle: 'CSSI: Elements: Innovating for Edge-to-Edge Climate Services. Award #2209806',
   continueWorking: 'Walk right through to your applications and/or gateways.',
   componentStatus: 'Component status',
   versionInfo: 'Version info',
 })
+
+const nsflink = (
+    <Link.Anchor secondary href={'https://www.nsf.gov/awardsearch/show-award/?AWD_ID=2209806&HistoricalAwards=false' || ''} external>
+      <Message content={m.nsfAwardTitle} />
+    </Link.Anchor>
+)
 
 const Overview = () => {
   const applicationCount = useSelector(selectApplicationsTotalCount)
@@ -225,6 +235,14 @@ const Overview = () => {
                 />
               )}
               <HelpLink supportLink={supportLink} documentationLink={documentationBaseUrl} />
+              <Message
+                 className={style.nsfFunding}
+                 content={m.nsfFundingMessage}
+                 component="h2"
+                 values={{
+                    link: nsflink
+                  }}
+              />
             </Col>
           </Row>
           {chooser}

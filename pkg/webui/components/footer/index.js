@@ -153,6 +153,16 @@ const Footer = ({
             </a>
           </span>
         </div>
+        <FooterSection>
+          Need help or have questions? Contact: {'  '}
+          <a
+            className={style.link}
+            href="mailto:ccarthen@unr.edu?subject=Portal%20Support%20Inquiry"
+            style={{ marginLeft: '2px' }}
+          >
+            ccarthen@unr.edu
+          </a>
+        </FooterSection>
       </div>
       <div className={style.right}>
         {links.map((item, key) => (
