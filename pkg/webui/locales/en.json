@@ -904,6 +904,8 @@
   "console.views.overview.index.welcome": "Welcome to the Console!",
   "console.views.overview.index.welcomeBack": "Welcome back, {userName}! 👋",
   "console.views.overview.index.getStarted": "Get started right away by creating an application or registering a gateway.",
+  "console.views.overview.index.nsfFundingMessage": "This portal has been created as part of the work done in the NSF award {link}",
+  "console.views.overview.index.nsfAwardTitle": "CSSI: Elements: Innovating for Edge-to-Edge Climate Services. Award #2209806",
   "console.views.overview.index.continueWorking": "Walk right through to your applications and/or gateways.",
   "console.views.overview.index.componentStatus": "Component status",
   "console.views.overview.index.versionInfo": "Version info",

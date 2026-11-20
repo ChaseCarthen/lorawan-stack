@@ -904,6 +904,8 @@
   "console.views.overview.index.welcome": "コンソールへようこそ！",
   "console.views.overview.index.welcomeBack": "おかえりなさい、{userName}! 👋",
   "console.views.overview.index.getStarted": "アプリケーションを作成したり、ゲートウェイを登録することで、すぐに始めることができます",
+  "console.views.overview.index.nsfFundingMessage": "",
+  "console.views.overview.index.nsfAwardTitle": "",
   "console.views.overview.index.continueWorking": "アプリケーションやゲートウェイへの誘導を行います",
   "console.views.overview.index.componentStatus": "コンポーネントの状況",
   "console.views.overview.index.versionInfo": "バージョン情報",
